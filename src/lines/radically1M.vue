@@ -1,0 +1,45 @@
+<script setup>
+
+const props = defineProps({
+  inversed: {
+    type: Boolean,
+    default: false,
+  },
+
+  document: {
+    type: Boolean,
+    default: false,
+  }
+})
+</script>
+
+<script>
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<template>
+    <svg v-if="inversed" width="80" height="30" viewBox="0 0 80 30">
+        <line x1="0" y1="0" x2="25" y2="15" stroke="#000" stroke-width="1" stroke-linecap="round"/>
+        <line x1="0" y1="30" x2="25" y2="15" stroke="#000" stroke-width="1" stroke-linecap="round"/>
+        <line x1="40" y1="5" x2="40" y2="25" stroke="#000" stroke-width="1" stroke-linecap="round" />
+
+        <svg v-if="document" x="50" y="5" width="20" height="20" viewBox="0 0 20 20">
+          <circle cx="10" cy="10" r="10" stroke="#000" stroke-width="1" fill="white" />
+          <line x1="0" y1="10" x2="20" y2="10" stroke="#000" stroke-width="1.3" />
+          <line x1="10" y1="0" x2="10" y2="20" stroke="#000" stroke-width="1.3" />
+        </svg>
+    </svg>
+    <svg v-else width="80" height="30" viewBox="0 0 80 30">
+        <line x1="80" y1="0" x2="55" y2="15" stroke="#000" stroke-width="1" stroke-linecap="round"/>
+        <line x1="80" y1="30" x2="55" y2="15" stroke="#000" stroke-width="1" stroke-linecap="round"/>
+        <line x1="40" y1="5" x2="40" y2="25" stroke="#000" stroke-width="1" stroke-linecap="round" />
+        
+        <svg v-if="document" x="10" y="5" width="20" height="20" viewBox="0 0 20 20">
+          <circle cx="10" cy="10" r="10" stroke="#000" stroke-width="1" fill="white" />
+          <line x1="0" y1="10" x2="20" y2="10" stroke="#000" stroke-width="1.3" />
+          <line x1="10" y1="0" x2="10" y2="20" stroke="#000" stroke-width="1.3" />
+      </svg>
+    </svg>
+</template>
