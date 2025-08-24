@@ -34,7 +34,7 @@ function resizeTextarea(name) {
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; background-color: #ADD8E6; height: auto;">
+  <div class="custom-node">
     <div>
       Node ID: {{ id }}
     </div>
@@ -42,32 +42,20 @@ function resizeTextarea(name) {
       :id="'textarea' + props.id + '-name'"
       placeholder="Название элемента"
       @input="resizeTextarea(props.id + '-name')"
-      style="background-color: #ADD8E6;
-        resize: none;
-        min-width:200px;
-        min-height: 60px;
-        height: auto; 
-        text-align: center;"
+      class="block-textarea"
+      style="background-color: #ADD8E6; text-align: center;"
     ></textarea>
     <textarea 
       :id="'textarea' + props.id + '-main'"
       placeholder="# имя атрибута: тип"
       @input="resizeTextarea(props.id + '-main')"
-      style="
-        resize: none;
-        min-width:200px;
-        min-height: 60px;
-        height: auto;"
+      class="block-textarea"
     ></textarea>
     <textarea 
       :id="'textarea' + props.id + '-add'"
       placeholder="неключевые атрибуты"
       @input="resizeTextarea(props.id + '-add')"
-      style="
-        resize: none;
-        min-width:200px;
-        min-height: 60px;
-        height: auto;"
+      class="block-textarea"
     ></textarea>
   </div>
 
@@ -85,3 +73,20 @@ function resizeTextarea(name) {
   <Handle id="e" type="target" :position="Position.Left" />
   <Handle id="f" type="target" :position="Position.Left" style="top: 50px"/>
 </template>
+
+<style>
+.custom-node {
+  display: flex;
+  flex-direction: column;
+  background-color: #ADD8E6;
+  height: auto;
+  border: 1px solid black;
+}
+
+.block-textarea {
+  resize: none;
+  min-width: 200px;
+  min-height: 60px;
+  height: auto;
+}
+</style>

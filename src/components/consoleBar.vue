@@ -4,7 +4,7 @@ import useDragAndDrop from '../useDnD';
 import { useVueFlow } from '@vue-flow/core'
 
 const { getNodeId } = useDragAndDrop()
-const { addNodes } = useVueFlow()
+const { addNodes, addEdges, getNodes } = useVueFlow()
 
 const currentCommand = ref('');
 const commandHistory = ref([]);
@@ -30,6 +30,9 @@ const executeCommand = () => {
 };
 
 const getCommandOutput = (command) => {
+  if (command == undefined || !command.includes('(')) {
+    return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'
+  }
   const commandHeader = command.split('(')[0]
   const commandBody = command.split('(')[1].slice(0, -1).split(',')
   if (commandHeader === 'help') {
@@ -42,7 +45,7 @@ const getCommandOutput = (command) => {
     let currentId = null
     currentId = getNodeId()
     if (commandBody[0] != '') {
-      currentId = commandBody[0]
+      currentId = commandBody[0].trim()
     }
     const newNode = {
     id: currentId,
@@ -51,7 +54,34 @@ const getCommandOutput = (command) => {
     data: { label: currentId }
     }
     addNodes(newNode)
-    return `Добавлен шаблон с id: ${currentId}`;
+    return `Добавлена сущность с id: ${currentId}`;
+  } else if (commandHeader === 'createConnection') {
+    if (commandBody.length < 2) {
+      return 'Не введены обязательные параметры. Необходимо ввести 2 id сущностей.'
+    } else {
+      const nodeId1 = commandBody[0].trim()
+      const nodeId2 = commandBody[1].trim()
+      const firstNodePosition = getNodes.value.find(item => item.id === nodeId1)?.position
+      if (!firstNodePosition) {
+        return `Не существует сущности с id: ${nodeId1}`
+      }
+      const secondNodePosition = getNodes.value.find(item => item.id === nodeId2)?.position
+      if (!secondNodePosition) {
+        return `Не существует сущности с id: ${nodeId2}`
+      }
+
+      const newEdge = {
+        source: nodeId1,
+        target: nodeId2,
+        sourceHandle: firstNodePosition.x > secondNodePosition.x ? 'e' : 'b',
+        targetHandle: firstNodePosition.x > secondNodePosition.x ? 'b' : 'e'
+      }
+      addEdges(newEdge)
+
+      return `Соединены сущности ${nodeId1} и ${nodeId2}`
+    }
+  } else {
+    return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'
   }
 };
 
@@ -77,7 +107,7 @@ const scrollToBottom = () => {
 
     <div ref="output" class="console-output">
       <div v-for="(entry, index) in commandHistory" :key="index" class="command-entry">
-        <span class="user-prompt">user.command:-></span> {{ entry.command }}
+        <span class="user-prompt">user.command:-></span> <span class="console-code">{{ entry.command }}</span>
         <p v-if="entry.output" class="command-output" v-html="entry.output"></p>
       </div>
     </div> 
@@ -132,6 +162,10 @@ const scrollToBottom = () => {
 .user-prompt {
   color: black;
   font-weight: bold;
+}
+
+.console-code {
+  text-transform: none;
 }
 
 .command-output {
