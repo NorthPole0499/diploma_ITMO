@@ -83,6 +83,7 @@ const { onDragStart } = useDragAndDrop()
 .big-button {
   width: 100%;
   margin-right: 1rem;
+  box-sizing: border-box;
 }
 
 .container {

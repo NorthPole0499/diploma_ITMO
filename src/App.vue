@@ -41,18 +41,6 @@ watch(edges.value.length, () => {
   console.log(edges);
 });
 
-function connectNodes(nodeId1, nodeId2) {
-  const firstNodePosition = getNodes.value.find(item => item.id === nodeId1).position
-  const secondNodePosition = getNodes.value.find(item => item.id === nodeId2).position
-  const newEdge = {
-    source: nodeId1,
-    target: nodeId2,
-    sourceHandle: firstNodePosition.x > secondNodePosition.x ? 'e' : 'b',
-    targetHandle: firstNodePosition.x > secondNodePosition.x ? 'b' : 'e'
-  }
-  addEdges(newEdge)
-}
-
 function build(e) {
   console.log(e)
   addEdges(e)
@@ -95,10 +83,9 @@ onConnect(build)
       </template>
     </VueFlow>
 
-    <SideBar @send-open-click="openConsole"/>
+    <SideBar @send-open-click="openConsole" style="margin: 0.75rem;"/>
     <div v-if="showConsole" id='overlay' class="overlay"></div>
     <consoleBar v-if="showConsole" @send-close-click="closeConsole"/>
-    <button @click="connectNodes('dndnode_0', 'dndnode_1')">Hello</button>
   </div>
 </template>
 

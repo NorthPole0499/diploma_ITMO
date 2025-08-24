@@ -157,7 +157,7 @@ export default {
       <radicallyN v-else :inversed="true" :document="leftDocument"/>
 
       <div :id="'leftDropdown' + id" class="dropdown-content" style="transform: translate(40%, 10%)">
-        <div style="padding: 0.25rem;">
+        <div style="padding: 0.5rem;">
           <button :id="'leftButton-0-' + id" class="edge-button" @click="setType('left', 0)" style="background-color: rgb(232, 238, 220);">0...1</button>
           <button :id="'leftButton-1-' + id" class="edge-button" @click="setType('left', 1)">Только 1</button>
           <button :id="'leftButton-2-' + id" class="edge-button" @click="setType('left', 2)">0...M</button>
@@ -184,7 +184,7 @@ export default {
       <radicallyN v-if="rightType === 4" :document="rightDocument"/>
 
       <div :id="'rightDropdown' + id" class="dropdown-content" style="transform: translate(-80%, 10%)">
-        <div style="padding: 0.25rem;">
+        <div style="padding: 0.5rem;">
           <button :id="'rightButton-0-' + id" class="edge-button" @click="setType('right', 0)" style="background-color: rgb(232, 238, 220);">0...1</button>
           <button :id="'rightButton-1-' + id" class="edge-button" @click="setType('right', 1)">Только 1</button>
           <button :id="'rightButton-2-' + id" class="edge-button" @click="setType('right', 2)">0...M</button>
