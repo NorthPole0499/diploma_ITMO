@@ -51,8 +51,7 @@ onConnect(addEdges)
           :default-edge-options="defaultEdgeOptions"
           :connection-radius="25"
           @dragover="onDragOver" 
-          @dragleave="onDragLeave"
-          @nodes:added="logging">
+          @dragleave="onDragLeave">
       <DropzoneBackground
         :style="{
           backgroundColor: isDragOver ? '#e7f3ff' : 'transparent',

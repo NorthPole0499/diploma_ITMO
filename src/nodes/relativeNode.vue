@@ -35,7 +35,7 @@ function resizeTextarea(name) {
 <template>
   <div class="custom-node">
     <div>
-      Node ID: {{ id }}
+      Node ID: <span style="text-transform: none;">{{ id }}</span>
     </div>
     <textarea 
       :id="'textarea' + props.id + '-name'"

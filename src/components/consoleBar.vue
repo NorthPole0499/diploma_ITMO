@@ -82,7 +82,44 @@ const getCommandOutput = (command) => {
       return `Соединены сущности ${nodeId1} и ${nodeId2}`
     }
   } else if (commandHeader === 'changeConnection') {
-    store.setCurrentEdge('56')
+    if (commandBody.length < 3) {
+      return 'Не введены обязательные параметры. Необходимо ввести 2 id сущностей и желаемый тип соединения.'
+    } else {
+      const nodeId1 = commandBody[0].trim()
+      const nodeId2 = commandBody[1].trim()
+      const firstNodePosition = getNodes.value.find(item => item.id === nodeId1)?.position
+      if (!firstNodePosition) {
+        return `Не существует сущности с id: ${nodeId1}`
+      }
+      const secondNodePosition = getNodes.value.find(item => item.id === nodeId2)?.position
+      if (!secondNodePosition) {
+        return `Не существует сущности с id: ${nodeId2}`
+      }
+      let connectionNum = 0
+      switch (commandBody[2].trim()) {
+        case '0...1':
+          connectionNum = 0
+          break
+        case 'only_1':
+          connectionNum = 1
+          break
+        case '0...M':
+          connectionNum = 2
+          break
+        case '1...M':
+          connectionNum = 3
+          break
+        case 'only_N':
+          connectionNum = 4
+          break
+        default:
+          connectionNum = 0
+      }
+
+      store.setCurrentEdge({first: nodeId1, second: nodeId2, connection: connectionNum, side: firstNodePosition.x > secondNodePosition.x ? 'right' : 'left', })
+
+      return 'Соединение изменено'
+    }
   } else {
     return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'
   }

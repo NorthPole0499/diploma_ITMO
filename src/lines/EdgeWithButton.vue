@@ -75,7 +75,12 @@ const store = useEdgesStore()
 const neededEdge = computed(() => store.currentEdge)
 
 watch(neededEdge, (newValue, oldValue) => {
-  console.log(newValue, oldValue)
+  const splittedIds = props.id.split('-')
+  const currentIds = [splittedIds[1].slice(0, -1), splittedIds[2].slice(0, -1)]
+
+  if (currentIds.includes(newValue.first) && currentIds.includes(newValue.second)) {
+    setType(newValue.side, newValue.connection)
+  }
 })
 
 const getButtonPosition = (index) => {
