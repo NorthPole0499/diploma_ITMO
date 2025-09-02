@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath } from '@vue-flow/core'
 import { computed } from 'vue'
+import { useEdgesStore } from '@/stores/edges-store'
 import radically01 from './radically01.vue'
 import radicallyOnly1 from './radicallyOnly1.vue'
 import radically0M from './radically0M.vue'
@@ -69,6 +70,13 @@ const path = computed(() => getSmoothStepPath(props))
 // const inverted = computed(() => {
 //   return props.sourceX < props.targetX
 // })
+
+const store = useEdgesStore()
+const neededEdge = computed(() => store.currentEdge)
+
+watch(neededEdge, (newValue, oldValue) => {
+  console.log(newValue, oldValue)
+})
 
 const getButtonPosition = (index) => {
   const isSourceLeft = props.sourceX < props.targetX

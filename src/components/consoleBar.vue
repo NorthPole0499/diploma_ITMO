@@ -1,10 +1,12 @@
 <script setup>
 import { ref, nextTick } from 'vue';
+import { useEdgesStore } from '@/stores/edges-store';
 import useDragAndDrop from '../useDnD';
 import { useVueFlow } from '@vue-flow/core'
 
 const { getNodeId } = useDragAndDrop()
 const { addNodes, addEdges, getNodes } = useVueFlow()
+const store = useEdgesStore()
 
 const currentCommand = ref('');
 const commandHistory = ref([]);
@@ -80,7 +82,7 @@ const getCommandOutput = (command) => {
       return `Соединены сущности ${nodeId1} и ${nodeId2}`
     }
   } else if (commandHeader === 'changeConnection') {
-    console.log(props.specialRef)
+    store.setCurrentEdge('56')
   } else {
     return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'
   }
