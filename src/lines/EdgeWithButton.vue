@@ -70,7 +70,6 @@ const path = computed(() => getSmoothStepPath(props))
 //   return props.sourceX < props.targetX
 // })
 
-
 const getButtonPosition = (index) => {
   const isSourceLeft = props.sourceX < props.targetX
   

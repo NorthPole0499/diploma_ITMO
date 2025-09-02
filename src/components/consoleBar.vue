@@ -16,7 +16,6 @@ function closeConsole () {
   emit('sendCloseClick')
 }
 
-
 const executeCommand = () => {
   if (!currentCommand.value.trim()) return;
   
@@ -80,6 +79,8 @@ const getCommandOutput = (command) => {
 
       return `Соединены сущности ${nodeId1} и ${nodeId2}`
     }
+  } else if (commandHeader === 'changeConnection') {
+    console.log(props.specialRef)
   } else {
     return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'
   }

@@ -37,19 +37,9 @@ function closeConsole () {
   showConsole.value = false
 }
 
-watch(edges.value.length, () => {
-  console.log(edges);
-});
+const refEdge = ref(null)
 
-function build(e) {
-  console.log(e)
-  addEdges(e)
-  console.log(getNodes.value)
-}
-
-
-
-onConnect(build)
+onConnect(addEdges)
 </script>
 
 <template>

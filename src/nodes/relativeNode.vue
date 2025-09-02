@@ -28,7 +28,6 @@ const props = defineProps({
 function resizeTextarea(name) {
       const textarea = document.getElementById('textarea' + name);
       textarea.style.height = 'auto';
-      console.log(textarea.scrollHeight)
       textarea.style.height = textarea.scrollHeight + 'px';
 }
 </script>
