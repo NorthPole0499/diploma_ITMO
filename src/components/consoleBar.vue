@@ -64,11 +64,11 @@ const getCommandOutput = (command) => {
       const nodeId2 = commandBody[1].trim()
       const firstNodePosition = getNodes.value.find(item => item.id === nodeId1)?.position
       if (!firstNodePosition) {
-        return `Не существует сущности с id: ${nodeId1}`
+        return `Не существует сущности с id: <span class="console-code">${nodeId1}</span>`
       }
       const secondNodePosition = getNodes.value.find(item => item.id === nodeId2)?.position
       if (!secondNodePosition) {
-        return `Не существует сущности с id: ${nodeId2}`
+        return `Не существует сущности с id: <span class="console-code">${nodeId2}</span>`
       }
 
       const newEdge = {
@@ -79,7 +79,7 @@ const getCommandOutput = (command) => {
       }
       addEdges(newEdge)
 
-      return `Соединены сущности ${nodeId1} и ${nodeId2}`
+      return `Соединены сущности <span class="console-code">${nodeId1}</span> и <span class="console-code">${nodeId2}</span>`
     }
   } else if (commandHeader === 'changeConnection') {
     if (commandBody.length < 3) {
@@ -89,11 +89,11 @@ const getCommandOutput = (command) => {
       const nodeId2 = commandBody[1].trim()
       const firstNodePosition = getNodes.value.find(item => item.id === nodeId1)?.position
       if (!firstNodePosition) {
-        return `Не существует сущности с id: ${nodeId1}`
+        return `Не существует сущности с id: <span class="console-code">${nodeId1}</span>`
       }
       const secondNodePosition = getNodes.value.find(item => item.id === nodeId2)?.position
       if (!secondNodePosition) {
-        return `Не существует сущности с id: ${nodeId2}`
+        return `Не существует сущности с id: <span class="console-code">${nodeId2}</span>`
       }
       let connectionNum = 0
       switch (commandBody[2].trim()) {
@@ -117,6 +117,25 @@ const getCommandOutput = (command) => {
       }
 
       store.setCurrentEdge({first: nodeId1, second: nodeId2, connection: connectionNum, side: firstNodePosition.x > secondNodePosition.x ? 'right' : 'left', })
+
+      return 'Соединение изменено'
+    }
+  } else if (commandHeader === 'changeDocument') {
+    if (commandBody.length < 2) {
+      return 'Не введены обязательные параметры. Необходимо ввести 2 id сущностей.'
+    } else {
+      const nodeId1 = commandBody[0].trim()
+      const nodeId2 = commandBody[1].trim()
+      const firstNodePosition = getNodes.value.find(item => item.id === nodeId1)?.position
+      if (!firstNodePosition) {
+        return `Не существует сущности с id: <span class="console-code">${nodeId1}</span>`
+      }
+      const secondNodePosition = getNodes.value.find(item => item.id === nodeId2)?.position
+      if (!secondNodePosition) {
+        return `Не существует сущности с id: <span class="console-code">${nodeId2}</span>`
+      }
+
+      store.setCurrentDocument({first: nodeId1, second: nodeId2, side: firstNodePosition.x > secondNodePosition.x ? 'right' : 'left', })
 
       return 'Соединение изменено'
     }

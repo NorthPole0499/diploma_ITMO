@@ -83,6 +83,17 @@ watch(neededEdge, (newValue, oldValue) => {
   }
 })
 
+const neededDocument = computed(() => store.currentDocument)
+
+watch(neededDocument, (newValue, oldValue) => {
+  const splittedIds = props.id.split('-')
+  const currentIds = [splittedIds[1].slice(0, -1), splittedIds[2].slice(0, -1)]
+
+  if (currentIds.includes(newValue.first) && currentIds.includes(newValue.second)) {
+    setDocument(newValue.side)
+  }
+})
+
 const getButtonPosition = (index) => {
   const isSourceLeft = props.sourceX < props.targetX
   
