@@ -18,6 +18,14 @@ function closeConsole () {
   emit('sendCloseClick')
 }
 
+const getSideByPosition = (pos1, pos2) => {
+  if (pos1 > pos2) {
+    return 'right'
+  } else {
+    return 'left'
+  }
+}
+
 const executeCommand = () => {
   if (!currentCommand.value.trim()) return;
   
@@ -78,6 +86,31 @@ const getCommandOutput = (command) => {
         targetHandle: firstNodePosition.x > secondNodePosition.x ? 'b' : 'e'
       }
       addEdges(newEdge)
+
+      for (let i = 2; i < commandBody.length; i++) {
+        let connectionNum = 0
+        switch (commandBody[i].trim()) {
+          case '0...1':
+            connectionNum = 0
+            break
+          case 'only_1':
+            connectionNum = 1
+            break
+          case '0...M':
+            connectionNum = 2
+            break
+          case '1...M':
+            connectionNum = 3
+            break
+          case 'only_N':
+            connectionNum = 4
+            break
+          default:
+            connectionNum = 0
+        }
+
+        store.setCurrentEdge({first: nodeId1, second: nodeId2, connection: connectionNum, side: i == 2 ? getSideByPosition(firstNodePosition.x, secondNodePosition.x) : getSideByPosition(secondNodePosition.x, firstNodePosition.x) })
+        }
 
       return `Соединены сущности <span class="console-code">${nodeId1}</span> и <span class="console-code">${nodeId2}</span>`
     }
