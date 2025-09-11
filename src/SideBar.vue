@@ -1,10 +1,14 @@
 <script setup>
 import useDragAndDrop from './useDnD'
 
-const emit = defineEmits(['sendOpenClick'])
+const emit = defineEmits(['sendOpenClick', 'makeScreenshot'])
 
 function openConsole () {
   emit('sendOpenClick')
+}
+
+function makeScreenshot () {
+  emit('makeScreenshot')
 }
 
 const { onDragStart } = useDragAndDrop()
@@ -70,7 +74,10 @@ const { onDragStart } = useDragAndDrop()
       </div>
 
       <div>
-        <div class="vue-flow__node-input big-button" @click="openConsole()" style="cursor: pointer;">
+        <div class="vue-flow__node-input big-button" @click="makeScreenshot()" style="cursor: pointer;">
+          Сделать снимок экрана
+        </div>
+        <div class="vue-flow__node-input big-button" @click="openConsole()" style="margin-top: 1rem; cursor: pointer;">
           Открыть консоль редактирования
         </div>
       </div>
@@ -83,6 +90,7 @@ const { onDragStart } = useDragAndDrop()
 .big-button {
   width: 100%;
   margin-right: 1rem;
+
   box-sizing: border-box;
 }
 

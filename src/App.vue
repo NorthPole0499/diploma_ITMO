@@ -7,6 +7,7 @@ import useDragAndDrop from './useDnD'
 import relativeNode from './nodes/relativeNode.vue'
 import EdgeWithButton from './lines/EdgeWithButton.vue'
 import consoleBar from './components/consoleBar.vue'
+import html2canvas from 'html2canvas'
 
 const { onConnect, addEdges, getNodes } = useVueFlow()
 
@@ -14,6 +15,9 @@ const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
 
 const nodes = ref([])
 const edges = ref([])
+
+const screenWidth = ref(screen.width)
+const screenHeight = ref(screen.height)
 
 const edgeTypes = {
   'button': EdgeWithButton
@@ -37,14 +41,44 @@ function closeConsole () {
   showConsole.value = false
 }
 
+const capture = ref(null);
+const targetCanvas = ref(null);
+
+async function takeScreenshot () {
+  try {
+    if (!capture.value) {
+      return;
+    }
+
+    const canvas = await html2canvas(capture.value, {
+      width: screen.width - 500,
+      height: screen.height - 80,
+      useCORS: true,
+      allowTaint: false,
+      scale: 2,
+      backgroundColor: '#FFFFFF'
+    });
+        
+    const link = document.createElement('a');
+    link.download = 'diagram-screenshot.png';
+    link.href = canvas.toDataURL('image/png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error('Ошибка при создании скриншота:', error);
+  }
+}
+
 const refEdge = ref(null)
 
 onConnect(addEdges)
 </script>
 
 <template>
-  <div class="dnd-flow" @drop="onDrop">
-    <VueFlow 
+  <div class="dnd-flow" @drop="onDrop" style="overflow-x: none !important;">
+    <div ref="capture" >
+    <VueFlow
           :nodes="nodes" 
           :edges="edges"
           :edge-types="edgeTypes"
@@ -70,9 +104,12 @@ onConnect(addEdges)
           v-bind="buttonEdgeProps"
         />
       </template>
-    </VueFlow>
 
-    <SideBar @send-open-click="openConsole" style="margin: 0.75rem;"/>
+      <canvas ref="targetCanvas" :width="screenWidth - 500" :height="screenHeight - 80"></canvas>
+    </VueFlow>
+    </div>
+
+    <SideBar @send-open-click="openConsole" @make-screenshot="takeScreenshot" style="margin: 0.75rem;"/>
     <div v-if="showConsole" id='overlay' class="overlay"></div>
     <consoleBar v-if="showConsole" @send-close-click="closeConsole"/>
   </div>
