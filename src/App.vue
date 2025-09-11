@@ -8,6 +8,7 @@ import relativeNode from './nodes/relativeNode.vue'
 import EdgeWithButton from './lines/EdgeWithButton.vue'
 import consoleBar from './components/consoleBar.vue'
 import html2canvas from 'html2canvas'
+import { useEdgesStore } from '@/stores/edges-store'
 
 const { onConnect, addEdges, getNodes } = useVueFlow()
 
@@ -72,7 +73,13 @@ async function takeScreenshot () {
 
 const refEdge = ref(null)
 
-onConnect(addEdges)
+function addEdgesWithStore (e) {
+  const store = useEdgesStore()
+  store.setCommandHistory('createConnection(' + e.target + ', ' + e.source + ')')
+  addEdges(e)
+}
+
+onConnect(addEdgesWithStore)
 </script>
 
 <template>

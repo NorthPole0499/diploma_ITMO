@@ -1,5 +1,6 @@
 import { useVueFlow } from '@vue-flow/core'
 import { ref, watch } from 'vue'
+import { useEdgesStore } from '@/stores/edges-store';
 
 let id = 0
 
@@ -108,6 +109,9 @@ export default function useDragAndDrop() {
 
       off()
     })
+
+    const store = useEdgesStore()
+    store.setCommandHistory('createNode()')
 
     addNodes(newNode)
   }

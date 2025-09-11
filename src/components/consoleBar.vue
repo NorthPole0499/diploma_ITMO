@@ -44,6 +44,11 @@ const getCommandOutput = (command) => {
   }
   const commandHeader = command.split('(')[0]
   const commandBody = command.split('(')[1].slice(0, -1).split(',')
+
+  if (!(commandHeader === 'help' || commandHeader === 'clearConsole')) {
+    store.setCommandHistory(command)
+  }
+  
   if (commandHeader === 'help') {
     return "Для получения информации о всех возможных командах перейдите в <a href='https://clck.ru/3NVCx4' target='_blank'>документацию.</a>";
   }

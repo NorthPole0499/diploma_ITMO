@@ -1,7 +1,6 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { BaseEdge, EdgeLabelRenderer, getSmoothStepPath } from '@vue-flow/core'
-import { computed } from 'vue'
 import { useEdgesStore } from '@/stores/edges-store'
 import radically01 from './radically01.vue'
 import radicallyOnly1 from './radicallyOnly1.vue'
