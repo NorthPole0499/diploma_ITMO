@@ -113,9 +113,16 @@ const ToggleMenu = (index) => {
     const menu = index === 'left' ? document.getElementById('leftDropdown' + props.id) : document.getElementById('rightDropdown' + props.id)
     menu.style.display = menu.style.display === "block" ? 'none' : 'block'
     activeMenu.value = true
-} 
+}
+
+const typesMap = {0: '0...1', 1: 'only_1', 2: '0...M', 3: '1...M', 4: 'only_N'}
 
 const setType = (side, value) => {
+  const splittedIds = props.id.split('-')
+  const currentIds = [splittedIds[1].slice(0, -1), splittedIds[2].slice(0, -1)]
+  const idsString = side == 'right' ? currentIds[0] + ', ' + currentIds[1] : currentIds[1] + ', ' + currentIds[0]
+  store.setCommandHistory('changeConnection(' + idsString + ', ' + typesMap[value] + ')')
+
   if (side === 'left') {
     const oldButton = document.getElementById('leftButton-' + leftType.value + '-' + props.id)
     oldButton.style.backgroundColor = 'rgb(255, 255, 255)'
@@ -132,6 +139,11 @@ const setType = (side, value) => {
 }
 
 const setDocument = (side) => {
+  const splittedIds = props.id.split('-')
+  const currentIds = [splittedIds[1].slice(0, -1), splittedIds[2].slice(0, -1)]
+  const idsString = side == 'right' ? currentIds[0] + ', ' + currentIds[1] : currentIds[1] + ', ' + currentIds[0]
+  store.setCommandHistory('changeDocument(' + idsString + ')')
+
   if (side === 'left') {
     const button = document.getElementById('leftDocument-' + props.id)
     if (leftDocument.value) {
