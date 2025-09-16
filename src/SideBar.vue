@@ -3,7 +3,7 @@ import useDragAndDrop from './useDnD'
 import { useEdgesStore } from '@/stores/edges-store';
 import { computed } from 'vue'
 
-const emit = defineEmits(['sendOpenClick', 'makeScreenshot'])
+const emit = defineEmits(['sendOpenClick', 'makeScreenshot', 'copyText'])
 
 const store = useEdgesStore()
 
@@ -24,6 +24,7 @@ async function copyStory () {
 
   try {
     await navigator.clipboard.writeText(text.slice(0, -1));
+    emit('copyText')
   } catch (error) {
     console.error('Ошибка копирования:', error);
   }
@@ -92,11 +93,11 @@ const { onDragStart } = useDragAndDrop()
       </div>
 
       <div>
-        <div class="vue-flow__node-input big-button" @click="makeScreenshot()" style="cursor: pointer;">
-          Сделать снимок экрана
-        </div>
-        <div class="vue-flow__node-input big-button" @click="openConsole()" style="margin-top: 1rem; cursor: pointer;">
+        <div class="vue-flow__node-input big-button" @click="openConsole()" style="cursor: pointer;">
           Открыть консоль редактирования
+        </div>
+        <div class="vue-flow__node-input big-button" @click="makeScreenshot()" style="margin-top: 1rem; cursor: pointer;">
+          Сделать снимок экрана
         </div>
         <div class="vue-flow__node-input big-button" @click="copyStory()" style="margin-top: 1rem; cursor: pointer;">
           Скопировать код создания диаграммы

@@ -36,7 +36,7 @@ const executeCommand = () => {
     setTimeout(() => {
       if (curCommand !== '') {
       const newCommand = curCommand.trim() + ')'
-      console.log(newCommand)
+
       commandHistory.value.push({
       command: newCommand,
       output: getCommandOutput(newCommand)

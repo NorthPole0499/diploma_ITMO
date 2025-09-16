@@ -7,6 +7,7 @@ import useDragAndDrop from './useDnD'
 import relativeNode from './nodes/relativeNode.vue'
 import EdgeWithButton from './lines/EdgeWithButton.vue'
 import consoleBar from './components/consoleBar.vue'
+import toastInfo from './components/toastInfo.vue'
 import html2canvas from 'html2canvas'
 import { useEdgesStore } from '@/stores/edges-store'
 
@@ -66,12 +67,21 @@ async function takeScreenshot () {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    currentType.value = 'image'
+    showToast.value = true
   } catch (error) {
     console.error('Ошибка при создании скриншота:', error);
   }
 }
 
-const refEdge = ref(null)
+let currentType = ref('text')
+let showToast = ref(false)
+
+function copyText () {
+  currentType.value = 'text'
+  showToast.value = true
+}
 
 function addEdgesWithStore (e) {
   const store = useEdgesStore()
@@ -116,9 +126,11 @@ onConnect(addEdgesWithStore)
     </VueFlow>
     </div>
 
-    <SideBar @send-open-click="openConsole" @make-screenshot="takeScreenshot" style="margin: 0.75rem;"/>
+    <SideBar @send-open-click="openConsole" @make-screenshot="takeScreenshot" @copy-text="copyText" style="margin: 0.75rem;"/>
     <div v-if="showConsole" id='overlay' class="overlay"></div>
     <consoleBar v-if="showConsole" @send-close-click="closeConsole"/>
+
+    <toastInfo v-if="showToast" :type="currentType" @close-toast="showToast = false" />
   </div>
 </template>
 
