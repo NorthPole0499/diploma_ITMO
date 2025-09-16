@@ -31,10 +31,19 @@ const getSideByPosition = (pos1, pos2) => {
 const executeCommand = () => {
   if (!currentCommand.value.trim()) return;
   
-  commandHistory.value.push({
-    command: currentCommand.value,
-    output: getCommandOutput(currentCommand.value)
-  });
+  const commands = currentCommand.value.split(')')
+  for (let curCommand of commands) {
+    setTimeout(() => {
+      if (curCommand !== '') {
+      const newCommand = curCommand.trim() + ')'
+      console.log(newCommand)
+      commandHistory.value.push({
+      command: newCommand,
+      output: getCommandOutput(newCommand)
+      })
+    }
+    }, 50); 
+  }
   
   currentCommand.value = '';
   scrollToBottom();
@@ -231,7 +240,7 @@ const scrollToBottom = () => {
       <input 
         v-model="currentCommand"
         type="text" class="field-input" 
-        placeholder="Введите текст..." 
+        placeholder="Введите команды" 
         @keyup.enter="executeCommand">
       <button class="button-input" @click="executeCommand">></button>
     </div>
