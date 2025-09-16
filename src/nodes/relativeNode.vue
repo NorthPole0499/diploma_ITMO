@@ -1,5 +1,8 @@
 <script setup>
 import { Handle, Position} from '@vue-flow/core'
+import { ref, watch, computed } from 'vue'
+import { useNodeStore } from '@/stores/node-store'
+import { useEdgesStore } from '@/stores/edges-store'
 
 const props = defineProps({
   id: {
@@ -10,6 +13,33 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+})
+
+
+let titleNode = ref(null)
+let keyNode = ref(null)
+let noneKeyNode = ref(null)
+
+const store = useNodeStore()
+const currentNodeField = computed(() => store.currentNodeField)
+
+watch(currentNodeField, (newValue, oldValue) => {
+  if (props.id == newValue.id) {
+    switch (newValue.field) {
+      case 'title':
+        titleNode.value = newValue.value
+        break
+      case 'key':
+        keyNode.value = newValue.value
+        break
+      case 'noneKey':
+        noneKeyNode.value = newValue.value
+        break
+      default:
+        noneKeyNode.value = newValue.value
+        break
+    }
+  }
 })
 
 // const { updateNodeData, getConnectedEdges } = useVueFlow()
@@ -30,6 +60,12 @@ function resizeTextarea(name) {
       textarea.style.height = 'auto';
       textarea.style.height = textarea.scrollHeight + 'px';
 }
+
+const edgeStore = useEdgesStore()
+
+function putInCommandHistory (field, value) {
+  edgeStore.setCommandHistory('changeNodeField(' + props.id + ', ' + field +  ', ' + value + ')')
+}
 </script>
 
 <template>
@@ -40,20 +76,26 @@ function resizeTextarea(name) {
     <textarea 
       :id="'textarea' + props.id + '-name'"
       placeholder="Название элемента"
+      v-model="titleNode"
       @input="resizeTextarea(props.id + '-name')"
+      @change="putInCommandHistory('title', titleNode)"
       class="block-textarea"
       style="background-color: #ADD8E6; text-align: center;"
     ></textarea>
     <textarea 
       :id="'textarea' + props.id + '-main'"
+      v-model="keyNode"
       placeholder="# имя атрибута: тип"
       @input="resizeTextarea(props.id + '-main')"
+      @change="putInCommandHistory('key', keyNode)"
       class="block-textarea"
     ></textarea>
     <textarea 
       :id="'textarea' + props.id + '-add'"
+      v-model="noneKeyNode"
       placeholder="неключевые атрибуты"
       @input="resizeTextarea(props.id + '-add')"
+      @change="putInCommandHistory('noneKey', noneKeyNode)"
       class="block-textarea"
     ></textarea>
   </div>

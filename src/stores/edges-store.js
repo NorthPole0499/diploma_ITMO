@@ -19,7 +19,6 @@ export const useEdgesStore = defineStore('edges', {
             this.currentDocument = value
         },
         setCommandHistory (value) {
-            console.log(this.commandHistory)
             this.commandHistory = [...this.commandHistory, value]
         }
     }

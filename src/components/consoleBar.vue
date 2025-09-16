@@ -1,12 +1,14 @@
 <script setup>
 import { ref, nextTick } from 'vue';
 import { useEdgesStore } from '@/stores/edges-store';
+import { useNodeStore } from '@/stores/node-store';
 import useDragAndDrop from '../useDnD';
 import { useVueFlow } from '@vue-flow/core'
 
 const { getNodeId } = useDragAndDrop()
 const { addNodes, addEdges, getNodes } = useVueFlow()
 const store = useEdgesStore()
+const nodeStore = useNodeStore()
 
 const currentCommand = ref('');
 const commandHistory = ref([]);
@@ -176,6 +178,22 @@ const getCommandOutput = (command) => {
       store.setCurrentDocument({first: nodeId1, second: nodeId2, side: firstNodePosition.x > secondNodePosition.x ? 'right' : 'left', })
 
       return 'Соединение изменено'
+    }
+  } else if (commandHeader === 'changeNodeField') {
+    if (commandBody.length < 3) {
+      return 'Не введены обязательные параметры. Необходимо ввести id сущности, желаемое поле и его содержимое.'
+    } else {
+      const nodeId = commandBody[0].trim()
+      const fieldType = commandBody[1].trim()
+      const fieldValue = commandBody[2].trim()
+
+      if (!(['title', 'key', 'noneKey'].includes(fieldType))) {
+        return 'Введен некорректный тип желаемого поля'
+      }
+
+      nodeStore.setCurrentNodeField({id: nodeId, field: fieldType, value: fieldValue })
+
+      return 'Поле изменено'
     }
   } else {
     return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'
