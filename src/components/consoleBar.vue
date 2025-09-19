@@ -71,7 +71,7 @@ const getCommandOutput = (command) => {
     currentId = getNodeId()
     let xPosition = Math.random() * 300
     let yPosition = Math.random() * 300
-    
+
     if (commandBody[0] != '') {
       currentId = commandBody[0].trim()
     }
@@ -206,6 +206,24 @@ const getCommandOutput = (command) => {
       nodeStore.setCurrentNodeField({id: nodeId, field: fieldType, value: fieldValue })
 
       return 'Поле изменено'
+    }
+  } else if (commandHeader === 'changeNodePosition') {
+    if (commandBody.length < 3) {
+      return 'Не введены обязательные параметры. Необходимо ввести id сущности и желаемые координаты x, y.'
+    } else {
+      const nodeId = commandBody[0].trim()
+      const xPosition = Number(commandBody[1].trim())
+      const yPosition = Number(commandBody[2].trim())
+
+      const nodePosition = getNodes.value.find(item => item.id === nodeId)
+      if (!nodePosition) {
+        return `Не существует сущности с id: <span class="console-code">${nodeId}</span>`
+      }
+
+      nodePosition.position.x = xPosition
+      nodePosition.position.y = yPosition
+
+      return 'Положение сущности изменено'
     }
   } else {
     return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'
