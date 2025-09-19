@@ -1,10 +1,11 @@
 <script setup>
 import useDragAndDrop from './useDnD'
 import { useEdgesStore } from '@/stores/edges-store';
+import { useVueFlow } from '@vue-flow/core'
 import { computed } from 'vue'
 
 const emit = defineEmits(['sendOpenClick', 'makeScreenshot', 'copyText'])
-
+const { getNodes } = useVueFlow()
 const store = useEdgesStore()
 
 function openConsole () {
@@ -17,6 +18,10 @@ function makeScreenshot () {
 
 async function copyStory () {
   let text = ''
+
+  for (const node of getNodes.value) {
+    store.setCommandHistory('changeNodePosition(' + node.id + ', ' + node.position.x + ', ' + node.position.y + ')')
+  }
 
   for (const command of store.getCommandHistory) {
     text += command + '\n'
