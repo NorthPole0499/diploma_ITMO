@@ -24,7 +24,15 @@ async function copyStory () {
   }
 
   for (const command of store.getCommandHistory) {
-    text += command + '\n'
+    if (command.includes('Node')) {
+      text += command + '\n'
+    }
+  }
+
+  for (const command of store.getCommandHistory) {
+    if (!(command.includes('Node'))) {
+      text += command + '\n'
+    }
   }
 
   try {
