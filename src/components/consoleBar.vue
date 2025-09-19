@@ -69,13 +69,16 @@ const getCommandOutput = (command) => {
   } else if (commandHeader === 'createNode') {
     let currentId = null
     currentId = getNodeId()
+    let xPosition = Math.random() * 300
+    let yPosition = Math.random() * 300
+    
     if (commandBody[0] != '') {
       currentId = commandBody[0].trim()
     }
     const newNode = {
     id: currentId,
     type: 'relative',
-    position: { x: Math.random() * 300, y: Math.random() * 300 },
+    position: { x: xPosition, y: yPosition },
     data: { label: currentId }
     }
     addNodes(newNode)
