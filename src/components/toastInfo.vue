@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
+// функция, остлеживающая состояние хранилища состояний, и обрабатывающая ввод изменения соединения в консоль
+
 const props = defineProps({
   type: {
     type: String,
@@ -11,6 +13,8 @@ const props = defineProps({
 const emit = defineEmits(['closeToast'])
 
 let isVisible = ref(true)
+
+// функция, которая при появлении ставит таймер на 1,2 секунды, после чего уничтожает всплывающее уведомление
 
 onMounted(() => {
   isVisible.value = true

@@ -4,6 +4,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from 'pinia'
 
+// объявления хранилища состояний и инициализация самого приложения
+
 const pinia = createPinia()
 const app = createApp(App)
 

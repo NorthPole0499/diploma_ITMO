@@ -4,6 +4,8 @@ import { ref, watch, computed } from 'vue'
 import { useNodeStore } from '@/stores/node-store'
 import { useEdgesStore } from '@/stores/edges-store'
 
+// устанавливаем необходимые импорты, инициализируем реактивные переменные и входные атрибуты
+
 const props = defineProps({
   id: {
     type: String,
@@ -23,6 +25,7 @@ let noneKeyNode = ref(null)
 const store = useNodeStore()
 const currentNodeField = computed(() => store.currentNodeField)
 
+// функция, отслеживающая изменение состояния блоков, которая обновляет их содержимое при обновлении их консолью
 watch(currentNodeField, (newValue, oldValue) => {
   if (props.id == newValue.id) {
     switch (newValue.field) {
@@ -42,18 +45,7 @@ watch(currentNodeField, (newValue, oldValue) => {
   }
 })
 
-// const { updateNodeData, getConnectedEdges } = useVueFlow()
-
-// function onSelect(color) {
-//   updateNodeData(props.id, { color, isGradient: false })
-
-//   const connectedEdges = getConnectedEdges(props.id)
-//   for (const edge of connectedEdges) {
-//     edge.style = {
-//       stroke: color,
-//     }
-//   }
-// }
+// функция, адаптивно изменяющая размер текстового поля при вводе информации
 
 function resizeTextarea(name) {
       const textarea = document.getElementById('textarea' + name);
@@ -62,6 +54,8 @@ function resizeTextarea(name) {
 }
 
 const edgeStore = useEdgesStore()
+
+// функция для записи истории изменения ноды в логи
 
 function putInCommandHistory (field, value) {
   edgeStore.setCommandHistory('changeNodeField(' + props.id + ', ' + field +  ', ' + value + ')')

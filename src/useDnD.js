@@ -5,7 +5,7 @@ import { useEdgesStore } from '@/stores/edges-store';
 let id = 0
 
 /**
- * @returns {string} - A unique id.
+ * @returns {string}
  */
 function getId() {
   return `node_${id++}`

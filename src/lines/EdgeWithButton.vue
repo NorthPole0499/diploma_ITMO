@@ -8,6 +8,8 @@ import radically0M from './radically0M.vue'
 import radically1M from './radically1M.vue'
 import radicallyN from './radicallyN.vue'
 
+// устанавливаем необходимые импорты, инициализируем реактивные переменные
+
 const props = defineProps({
   id: {
     type: String,
@@ -73,6 +75,8 @@ const path = computed(() => getSmoothStepPath(props))
 const store = useEdgesStore()
 const neededEdge = computed(() => store.currentEdge)
 
+// функция, остлеживающая состояние хранилища состояний, и обрабатывающая ввод изменения соединения в консоль
+
 watch(neededEdge, (newValue, oldValue) => {
   const splittedIds = props.id.split('-')
   const currentIds = [splittedIds[1].slice(0, -1), splittedIds[2].slice(0, -1)]
@@ -84,6 +88,8 @@ watch(neededEdge, (newValue, oldValue) => {
 
 const neededDocument = computed(() => store.currentDocument)
 
+// функция, остлеживающая состояние хранилища состояний, и обрабатывающая ввод изменения типа документа в консоль
+
 watch(neededDocument, (newValue, oldValue) => {
   const splittedIds = props.id.split('-')
   const currentIds = [splittedIds[1].slice(0, -1), splittedIds[2].slice(0, -1)]
@@ -93,6 +99,7 @@ watch(neededDocument, (newValue, oldValue) => {
   }
 })
 
+// функция, возвращающая координаты кнопки, исходя из ее позиции
 const getButtonPosition = (index) => {
   const isSourceLeft = props.sourceX < props.targetX
   
@@ -108,6 +115,8 @@ const getButtonPosition = (index) => {
     }
   }
 }
+
+// блок функций, которые реализауют выпадающее меню после нажатие на соединение
 
 const ToggleMenu = (index) => {
     const menu = index === 'left' ? document.getElementById('leftDropdown' + props.id) : document.getElementById('rightDropdown' + props.id)

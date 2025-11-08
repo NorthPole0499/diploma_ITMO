@@ -5,6 +5,8 @@ import { useNodeStore } from '@/stores/node-store';
 import useDragAndDrop from '../useDnD';
 import { useVueFlow } from '@vue-flow/core'
 
+// функция, остлеживающая состояние хранилища состояний, и обрабатывающая ввод изменения соединения в консоль
+
 const { getNodeId } = useDragAndDrop()
 const { addNodes, addEdges, getNodes } = useVueFlow()
 const store = useEdgesStore()
@@ -28,6 +30,8 @@ const getSideByPosition = (pos1, pos2) => {
   }
 }
 
+// функция, обрабатывающая команду и выводящая результат в консоль
+
 const executeCommand = () => {
   if (!currentCommand.value.trim()) return;
   
@@ -48,6 +52,8 @@ const executeCommand = () => {
   currentCommand.value = '';
   scrollToBottom();
 };
+
+// функция, обрабатывающая введенную команду, и проводящая необходимые действия
 
 const getCommandOutput = (command) => {
   if (command == undefined || !command.includes('(')) {

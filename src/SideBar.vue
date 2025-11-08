@@ -2,19 +2,26 @@
 import useDragAndDrop from './useDnD'
 import { useEdgesStore } from '@/stores/edges-store';
 import { useVueFlow } from '@vue-flow/core'
-import { computed } from 'vue'
+
+// устанавливаем необходимые импорты, инициализируем реактивные переменные
 
 const emit = defineEmits(['sendOpenClick', 'makeScreenshot', 'copyText'])
 const { getNodes } = useVueFlow()
 const store = useEdgesStore()
 
+// функция для открытия консоли
+
 function openConsole () {
   emit('sendOpenClick')
 }
 
+// функция для создания скриншота
+
 function makeScreenshot () {
   emit('makeScreenshot')
 }
+
+// функция для копирования текста диаграммы
 
 async function copyStory () {
   let text = ''

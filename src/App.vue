@@ -11,6 +11,8 @@ import toastInfo from './components/toastInfo.vue'
 import html2canvas from 'html2canvas'
 import { useEdgesStore } from '@/stores/edges-store'
 
+// устанавливаем необходимые импорты, инициализируем реактивные переменные
+
 const { onConnect, addEdges, getNodes } = useVueFlow()
 
 const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
@@ -33,6 +35,8 @@ const defaultEdgeOptions = {
   }
 }
 
+// блок функций для открытия и закрытия консоли
+
 let showConsole = ref(false)
 
 function openConsole () {
@@ -42,6 +46,8 @@ function openConsole () {
 function closeConsole () {
   showConsole.value = false
 }
+
+// блок функций для создания скриншота диаграммы
 
 const capture = ref(null);
 const targetCanvas = ref(null);
@@ -75,6 +81,8 @@ async function takeScreenshot () {
   }
 }
 
+// блок функций для копирования кода диаграммы 
+
 let currentType = ref('text')
 let showToast = ref(false)
 
@@ -83,6 +91,7 @@ function copyText () {
   showToast.value = true
 }
 
+// функция для логгирования созданий соединений
 function addEdgesWithStore (e) {
   const store = useEdgesStore()
   store.setCommandHistory('createConnection(' + e.target + ', ' + e.source + ')')
