@@ -93,8 +93,9 @@ function copyText () {
 
 // функция для логгирования созданий соединений
 function addEdgesWithStore (e) {
+  console.log(e)
   const store = useEdgesStore()
-  store.setCommandHistory('createConnection(' + e.target + ', ' + e.source + ')')
+  store.setCommandHistory('createConnection(' + e.target + ', ' + e.source + ', 0...1, 0...1, ' + e.targetHandle + ', ' + e.sourceHandle + ')')
   addEdges(e)
 }
 

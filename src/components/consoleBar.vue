@@ -104,11 +104,20 @@ const getCommandOutput = (command) => {
         return `Не существует сущности с id: <span class="console-code">${nodeId2}</span>`
       }
 
+      let firtsHandle = null
+      let secondHandle = null
+      if (commandBody.length >= 5) {
+        firtsHandle = commandBody[4].trim()
+      }
+      if (commandBody.length >= 6) {
+        secondHandle = commandBody[5].trim()
+      }
+
       const newEdge = {
         source: nodeId1,
         target: nodeId2,
-        sourceHandle: firstNodePosition.x > secondNodePosition.x ? 'e' : 'b',
-        targetHandle: firstNodePosition.x > secondNodePosition.x ? 'b' : 'e'
+        sourceHandle: firtsHandle ? firtsHandle : firstNodePosition.x > secondNodePosition.x ? 'e' : 'b',
+        targetHandle: secondHandle ? secondHandle: firstNodePosition.x > secondNodePosition.x ? 'b' : 'e'
       }
       addEdges(newEdge)
 
