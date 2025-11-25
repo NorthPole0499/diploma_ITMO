@@ -7,8 +7,8 @@ import { useVueFlow } from '@vue-flow/core'
 
 // функция, остлеживающая состояние хранилища состояний, и обрабатывающая ввод изменения соединения в консоль
 
-const { getNodeId } = useDragAndDrop()
-const { addNodes, addEdges, getNodes } = useVueFlow()
+const { getNodeId, deleteNodeById, deleteEdgeById } = useDragAndDrop()
+const { addNodes, addEdges, getNodes, getEdges } = useVueFlow()
 const store = useEdgesStore()
 const nodeStore = useNodeStore()
 
@@ -239,6 +239,36 @@ const getCommandOutput = (command) => {
       nodePosition.position.y = yPosition
 
       return 'Положение сущности изменено'
+    }
+  } else if (commandHeader === 'removeNode') {
+    if (commandBody.length < 1) {
+      return 'Не введены обязательные параметры. Необходимо ввести id сущности.'
+    } else {
+      const nodeId = commandBody[0].trim()
+
+      const nodePosition = getNodes.value.find(item => item.id === nodeId)
+      if (!nodePosition) {
+        return `Не существует сущности с id: <span class="console-code">${nodeId}</span>`
+      }
+
+      deleteNodeById(nodeId)
+
+      return 'Сущность удалена'
+    }
+  } else if (commandHeader === 'removeEdge') {
+    if (commandBody.length < 1) {
+      return 'Не введены обязательные параметры. Необходимо ввести id соединения.'
+    } else {
+      const edgeId = commandBody[0].trim()
+
+      const edgePosition = getEdges.value.find(item => item.id === edgeId)
+      if (!edgePosition) {
+        return `Не существует соединения с id: <span class="console-code">${edgeId}</span>`
+      }
+
+      deleteEdgeById(edgeId)
+
+      return 'Соединение удалено'
     }
   } else {
     return 'Неизвестная команда. <br>Введите <span class="console-code">help()</span> для получения справки о доступных командах.'

@@ -3,6 +3,7 @@ import { Handle, Position} from '@vue-flow/core'
 import { ref, watch, computed } from 'vue'
 import { useNodeStore } from '@/stores/node-store'
 import { useEdgesStore } from '@/stores/edges-store'
+import useDragAndDrop from '../useDnD'
 
 // устанавливаем необходимые импорты, инициализируем реактивные переменные и входные атрибуты
 
@@ -21,6 +22,8 @@ const props = defineProps({
 let titleNode = ref(null)
 let keyNode = ref(null)
 let noneKeyNode = ref(null)
+
+const { deleteNodeById } = useDragAndDrop()
 
 const store = useNodeStore()
 const currentNodeField = computed(() => store.currentNodeField)
@@ -60,10 +63,16 @@ const edgeStore = useEdgesStore()
 function putInCommandHistory (field, value) {
   edgeStore.setCommandHistory('changeNodeField(' + props.id + ', ' + field +  ', ' + value + ')')
 }
+
+// функция для удаления сущности
+
+function deleteNode () {
+  deleteNodeById(props.id)
+}
 </script>
 
 <template>
-  <div class="custom-node">
+  <div class="custom-node" @click.right="deleteNode()">
     <div>
       Node ID: <span style="text-transform: none;">{{ id }}</span>
     </div>

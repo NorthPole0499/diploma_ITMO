@@ -7,6 +7,7 @@ import radicallyOnly1 from './radicallyOnly1.vue'
 import radically0M from './radically0M.vue'
 import radically1M from './radically1M.vue'
 import radicallyN from './radicallyN.vue'
+import useDragAndDrop from '../useDnD'
 
 // устанавливаем необходимые импорты, инициализируем реактивные переменные
 
@@ -60,6 +61,8 @@ const props = defineProps({
 let leftType = ref(0)
 let rightType = ref(0)
 let activeMenu = ref(false)
+
+const { deleteEdgeById } = useDragAndDrop()
 
 let leftDocument = ref(false)
 let rightDocument = ref(false)
@@ -172,6 +175,11 @@ const setDocument = (side) => {
   }
 }
 
+// функция для удаления соединения
+
+function deleteEdge () {
+  deleteEdgeById(props.id)
+}
 </script>
 
 <script>
@@ -192,6 +200,7 @@ export default {
       }"
       class="nodrag nopan"
       @click="ToggleMenu('left')"
+      @click.right="deleteEdge()"
     >
       <radicallyOnly1 v-if="leftType === 0" :inversed="true" :document="leftDocument"/>
       <radically01 v-else-if="leftType === 1" :inversed="true" :document="leftDocument"/>
@@ -219,6 +228,7 @@ export default {
       }"
       class="nodrag nopan"
       @click="ToggleMenu('right')"
+      @click.right="deleteEdge()"
     >
       <radicallyOnly1 v-if="rightType === 0" :document="rightDocument"/>
       <radically01 v-if="rightType === 1" :document="rightDocument"/>

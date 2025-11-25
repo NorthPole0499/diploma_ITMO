@@ -28,6 +28,7 @@ export default function useDragAndDrop() {
   const { draggedType, isDragOver, isDragging } = state
 
   const { addNodes, screenToFlowCoordinate, onNodesInitialized, updateNode } = useVueFlow()
+  const { removeNodes, getEdges, removeEdges } = useVueFlow()
 
   watch(isDragging, (dragging) => {
     document.body.style.userSelect = dragging ? 'none' : ''
@@ -116,6 +117,29 @@ export default function useDragAndDrop() {
     addNodes(newNode)
   }
 
+  function deleteNodeById(nodeId) {
+    const connectedEdges = getEdges.value.filter(
+      (edge) => edge.source === nodeId || edge.target === nodeId
+    )
+    const edgeIdsToRemove = connectedEdges.map(edge => edge.id)
+
+    if (edgeIdsToRemove.length > 0) {
+      removeEdges(edgeIdsToRemove)
+    }
+    
+    removeNodes(nodeId)
+  
+    const store = useEdgesStore()
+    store.setCommandHistory(`removeNode(${nodeId})`)
+  }
+
+  function deleteEdgeById(edgeId) {
+    removeEdges([edgeId])
+    
+    const store = useEdgesStore()
+    store.setCommandHistory(`removeEdge(${edgeId})`)
+  }
+
   return {
     draggedType,
     isDragOver,
@@ -124,6 +148,8 @@ export default function useDragAndDrop() {
     onDragLeave,
     onDragOver,
     onDrop,
-    getNodeId
+    getNodeId,
+    deleteNodeById,
+    deleteEdgeById
   }
 }
