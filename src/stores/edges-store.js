@@ -1,5 +1,7 @@
 import { defineStore } from "pinia"
 
+// определение хранилища состояний для работы с соединениями и историей сохранений
+
 export const useEdgesStore = defineStore('edges', {
     state: () => ({
         currentEdge: null,
