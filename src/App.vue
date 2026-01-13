@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import DropzoneBackground from './DropzoneBackground.vue'
 import SideBar from './SideBar.vue'
@@ -49,14 +49,27 @@ function closeConsole () {
 
 // блок функций для создания скриншота диаграммы
 
-const capture = ref(null);
-const targetCanvas = ref(null);
+const capture = ref(null)
+const targetCanvas = ref(null)
+let showIndicator = ref(false)
 
 async function takeScreenshot () {
   try {
     if (!capture.value) {
       return;
     }
+
+    showIndicator.value = true
+
+    await nextTick()
+
+    var svgElements = document.body.querySelectorAll('svg');
+    svgElements.forEach(function(item) {
+      item.setAttribute("width", item.getBoundingClientRect().width);
+      item.setAttribute("height", item.getBoundingClientRect().height);
+      item.style.width = null;
+      item.style.height= null;
+    });
 
     const canvas = await html2canvas(capture.value, {
       width: screen.width - 500,
@@ -73,11 +86,13 @@ async function takeScreenshot () {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    showIndicator.value = false
 
     currentType.value = 'image'
     showToast.value = true
   } catch (error) {
     console.error('Ошибка при создании скриншота:', error);
+    showIndicator.value = false
   }
 }
 
@@ -121,6 +136,8 @@ onConnect(addEdgesWithStore)
         <p v-if="isDragOver">Отпустите</p>
       </DropzoneBackground>
 
+      <div v-if="showIndicator" class="multimodel-indicator">M</div>
+
       <template #node-relative="props">
         <relativeNode :id="props.id" :data="props.data" />
       </template>
@@ -155,5 +172,15 @@ onConnect(addEdgesWithStore)
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.multimodel-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 30px;
+  padding: 10px;
+  font-weight: bold;
+  color: black;
 }
 </style>
