@@ -11,6 +11,7 @@ import toastInfo from './components/toastInfo.vue'
 import html2canvas from 'html2canvas'
 import { useEdgesStore } from '@/stores/edges-store'
 
+
 // устанавливаем необходимые импорты, инициализируем реактивные переменные
 
 const { onConnect, addEdges, getNodes } = useVueFlow()
@@ -136,7 +137,7 @@ onConnect(addEdgesWithStore)
         <p v-if="isDragOver">Отпустите</p>
       </DropzoneBackground>
 
-      <div v-if="showIndicator" class="multimodel-indicator">M</div>
+      <div v-if="showIndicator" class="multimodel-indicator">[[[M]]]</div>
 
       <template #node-relative="props">
         <relativeNode :id="props.id" :data="props.data" />
