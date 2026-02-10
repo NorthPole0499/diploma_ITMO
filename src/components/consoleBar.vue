@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
 import { useEdgesStore } from '@/stores/edges-store';
 import { useNodeStore } from '@/stores/node-store';
 import useDragAndDrop from '../useDnD';
@@ -13,7 +13,7 @@ const store = useEdgesStore()
 const nodeStore = useNodeStore()
 
 const currentCommand = ref('');
-const commandHistory = ref([]);
+let commandHistory = ref([]);
 const output = ref(null);
 
 const emit = defineEmits(['sendCloseClick'])
@@ -21,6 +21,10 @@ const emit = defineEmits(['sendCloseClick'])
 function closeConsole () {
   emit('sendCloseClick')
 }
+
+onMounted (() => {
+  commandHistory.value = [...store.getConsoleHistory]
+})
 
 const getSideByPosition = (pos1, pos2) => {
   if (pos1 > pos2) {
@@ -41,10 +45,14 @@ const executeCommand = () => {
       if (curCommand !== '') {
       const newCommand = curCommand.trim() + ')'
 
-      commandHistory.value.push({
+      const commandInfo = {
       command: newCommand,
       output: getCommandOutput(newCommand)
-      })
+      }
+
+      store.setConsoleHistory(commandInfo)
+
+      commandHistory.value.push(commandInfo)
     }
     }, 50); 
   }
@@ -71,6 +79,7 @@ const getCommandOutput = (command) => {
   }
   else if (commandHeader === 'clearConsole') {
     commandHistory.value = [];
+    store.clearConsoleHistory()
     return '';
   } else if (commandHeader === 'createNode') {
     let currentId = null
