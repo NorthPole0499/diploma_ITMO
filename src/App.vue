@@ -10,6 +10,7 @@ import consoleBar from './components/consoleBar.vue'
 import toastInfo from './components/toastInfo.vue'
 import html2canvas from 'html2canvas'
 import { useEdgesStore } from '@/stores/edges-store'
+import FloatingNote from './nodes/FloatingNote.vue'
 
 
 // устанавливаем необходимые импорты, инициализируем реактивные переменные
@@ -107,6 +108,17 @@ function copyText () {
   showToast.value = true
 }
 
+// функции для работы с буквами
+
+const { textOverlay, closeOverlay, notes, removeNote } = useDragAndDrop()
+
+function updateNote(updatedNote) {
+  const index = notes.value.findIndex(n => n.id === updatedNote.id)
+  if (index !== -1) {
+    notes.value[index] = updatedNote
+  }
+}
+
 // функция для логгирования созданий соединений
 function addEdgesWithStore (e) {
   const store = useEdgesStore()
@@ -151,6 +163,14 @@ onConnect(addEdgesWithStore)
 
       <canvas ref="targetCanvas" :width="screenWidth - 500" :height="screenHeight - 80"></canvas>
     </VueFlow>
+
+    <FloatingNote
+        v-for="note in notes"
+        :key="note.id"
+        :note="note"
+        @update:note="updateNote"
+        @remove="removeNote"
+      />
     </div>
 
     <SideBar @send-open-click="openConsole" @make-screenshot="takeScreenshot" @copy-text="copyText" style="margin: 0.75rem;"/>

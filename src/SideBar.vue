@@ -60,15 +60,18 @@ const { onDragStart } = useDragAndDrop()
         <div class="description" style="display: flex; justify-content: center; font-size: medium;">Выберите желаемую форму для проектирования</div>
 
         <div class="nodes" style="margin-top: 2rem;">
-          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Relative Node</div>
+
+          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Реляционная сущность</div>
         
-          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Key-value Node</div>
+          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Сущность "Ключ-значение"</div>
         
-          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Graph Node</div>
+          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Графовая сущность</div>
         
-          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Document Node</div>
+          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Документная сущность</div>
         
-          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Column Node</div>
+          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Колоночная сущность</div>
+
+          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'text')">Текст</div>
         </div>
       </div>
 

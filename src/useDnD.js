@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { useEdgesStore } from '@/stores/edges-store';
 
 let id = 0
+const notes = ref([])
 
 // функция для возвращения id сущности по умолчанию
 
@@ -85,6 +86,18 @@ export default function useDragAndDrop() {
    * @param {DragEvent} event
    */
   function onDrop(event) {
+    if (draggedType.value === 'text') {
+      const rect = event.target.getBoundingClientRect()
+      notes.value.push({
+        id: `note_${Date.now()}`,
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+        text: ''
+      })
+      onDragEnd()
+      return
+    }
+
     const position = screenToFlowCoordinate({
       x: event.clientX,
       y: event.clientY,
@@ -112,6 +125,12 @@ export default function useDragAndDrop() {
     store.setCommandHistory('createNode()')
 
     addNodes(newNode)
+  }
+
+  // функция удаления заметки
+
+  function removeNote(noteId) {
+    notes.value = notes.value.filter(n => n.id !== noteId)
   }
 
   // функция для удаления сущности
@@ -151,6 +170,8 @@ export default function useDragAndDrop() {
     onDrop,
     getNodeId,
     deleteNodeById,
-    deleteEdgeById
+    deleteEdgeById,
+    notes,
+    removeNote
   }
 }
