@@ -4,6 +4,7 @@ import { useEdgesStore } from '@/stores/edges-store';
 
 let id = 0
 const notes = ref([])
+const squares = ref([])
 
 // функция для возвращения id сущности по умолчанию
 
@@ -98,6 +99,19 @@ export default function useDragAndDrop() {
       return
     }
 
+    if (draggedType.value === 'square') {
+      const rect = event.target.getBoundingClientRect()
+      squares.value.push({
+        id: `square_${Date.now()}`,
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+        width: 50,
+        height: 50
+      })
+      onDragEnd()
+      return
+    }
+
     const position = screenToFlowCoordinate({
       x: event.clientX,
       y: event.clientY,
@@ -131,6 +145,12 @@ export default function useDragAndDrop() {
 
   function removeNote(noteId) {
     notes.value = notes.value.filter(n => n.id !== noteId)
+  }
+
+  // функция удаления квадрата
+
+  function removeSquare(squareId) {
+    squares.value = squares.value.filter(s => s.id !== squareId)
   }
 
   // функция для удаления сущности
@@ -172,6 +192,8 @@ export default function useDragAndDrop() {
     deleteNodeById,
     deleteEdgeById,
     notes,
-    removeNote
+    removeNote,
+    squares,
+    removeSquare
   }
 }

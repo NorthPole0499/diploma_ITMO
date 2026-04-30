@@ -59,7 +59,7 @@ const { onDragStart } = useDragAndDrop()
       <div>
         <div class="description" style="display: flex; justify-content: center; font-size: medium;">Выберите желаемую форму для проектирования</div>
 
-        <div class="nodes" style="margin-top: 2rem;">
+        <div class="nodes" style="margin-top: 0.5rem;">
 
           <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Реляционная сущность</div>
         
@@ -72,11 +72,13 @@ const { onDragStart } = useDragAndDrop()
           <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'relative')">Колоночная сущность</div>
 
           <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'text')">Текст</div>
+
+          <div class="vue-flow__node-input big-button" :draggable="true" @dragstart="onDragStart($event, 'square')">Границы</div>
         </div>
       </div>
 
-      <div>
-        <div class="description" style="display: flex; justify-content: center; font-size: medium;">Обозначения атрибутов в нотации</div>
+      <div style="margin-top: 1rem">
+        <div class="description" style="display: flex; justify-content: center; font-size: medium; margin-bottom: 0 !important;">Обозначения атрибутов в нотации</div>
         <div style="display: flex; justify-content: center;">
           <table>
             <thead>
@@ -115,14 +117,14 @@ const { onDragStart } = useDragAndDrop()
         </div>
       </div>
 
-      <div>
+      <div style="margin-top: 0.75rem">
         <div class="vue-flow__node-input big-button" @click="openConsole()" style="cursor: pointer;">
           Открыть консоль редактирования
         </div>
-        <div class="vue-flow__node-input big-button" @click="makeScreenshot()" style="margin-top: 1rem; cursor: pointer;">
+        <div class="vue-flow__node-input big-button" @click="makeScreenshot()" style="margin-top: 0.5rem; cursor: pointer;">
           Сделать снимок экрана
         </div>
-        <div class="vue-flow__node-input big-button" @click="copyStory()" style="margin-top: 1rem; cursor: pointer;">
+        <div class="vue-flow__node-input big-button" @click="copyStory()" style="margin-top: 0.5rem; cursor: pointer;">
           Скопировать код создания диаграммы
         </div>
       </div>

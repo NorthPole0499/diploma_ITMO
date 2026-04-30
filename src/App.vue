@@ -11,6 +11,7 @@ import toastInfo from './components/toastInfo.vue'
 import html2canvas from 'html2canvas'
 import { useEdgesStore } from '@/stores/edges-store'
 import FloatingNote from './nodes/FloatingNote.vue'
+import DraggableSquare from './nodes/DraggableSquare.vue'
 
 
 // устанавливаем необходимые импорты, инициализируем реактивные переменные
@@ -110,12 +111,23 @@ function copyText () {
 
 // функции для работы с буквами
 
-const { textOverlay, closeOverlay, notes, removeNote } = useDragAndDrop()
+const { notes, removeNote } = useDragAndDrop()
 
 function updateNote(updatedNote) {
   const index = notes.value.findIndex(n => n.id === updatedNote.id)
   if (index !== -1) {
     notes.value[index] = updatedNote
+  }
+}
+
+// Функция для обновления квадрата
+
+const { squares, removeSquare } = useDragAndDrop()
+
+function updateSquare(updatedSquare) {
+  const index = squares.value.findIndex(s => s.id === updatedSquare.id)
+  if (index !== -1) {
+    squares.value[index] = { ...updatedSquare }
   }
 }
 
@@ -170,6 +182,14 @@ onConnect(addEdgesWithStore)
         :note="note"
         @update:note="updateNote"
         @remove="removeNote"
+      />
+      
+    <DraggableSquare
+        v-for="square in squares"
+        :key="square.id"
+        :square="square"
+        @update:square="updateSquare"
+        @remove="removeSquare"
       />
     </div>
 
