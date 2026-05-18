@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 import DropzoneBackground from './DropzoneBackground.vue'
 import SideBar from './SideBar.vue'
@@ -30,6 +30,11 @@ const edgeTypes = {
   'button': EdgeWithButton
 }
 
+
+onMounted(() => {
+  document.title = 'CASE-средство для проектирования'
+})
+
 const defaultEdgeOptions = {
   type: 'button',
   pathOptions: {
@@ -54,15 +59,12 @@ function closeConsole () {
 
 const capture = ref(null)
 const targetCanvas = ref(null)
-let showIndicator = ref(false)
 
 async function takeScreenshot () {
   try {
     if (!capture.value) {
       return;
     }
-
-    showIndicator.value = true
 
     await nextTick()
 
@@ -89,13 +91,11 @@ async function takeScreenshot () {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    showIndicator.value = false
 
     currentType.value = 'image'
     showToast.value = true
   } catch (error) {
     console.error('Ошибка при создании скриншота:', error);
-    showIndicator.value = false
   }
 }
 
@@ -160,8 +160,6 @@ onConnect(addEdgesWithStore)
       >
         <p v-if="isDragOver">Отпустите</p>
       </DropzoneBackground>
-
-      <div v-if="showIndicator" class="multimodel-indicator">[[[M]]]</div>
 
       <template #node-relative="props">
         <relativeNode :id="props.id" :data="props.data" />
